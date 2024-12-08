@@ -1,0 +1,8 @@
+Chào {{ user.username }},
+
+Cảm ơn bạn đã đăng ký. Vui lòng nhấn vào đường dẫn dưới đây để xác nhận email của bạn:
+
+{{ activate_url }}
+
+Trân trọng,
+Đội ngũ của chúng tôi

@@ -1,0 +1,53 @@
+version: "3.6"
+
+services:
+  api:
+    image: nvdluan/datn_linh:latest
+    environment:
+      DB_NAME: "game"
+      DB_USER: "admin"
+      DB_PASSWORD: "V4j0STN1r3OKzuA1QprLPL9ImscJ3trt"
+      DB_HOST: "14.225.217.59"
+      DB_PORT: "5432"
+      ACCESS_TOKEN_LIFETIME: "30000"
+      REFRESH_TOKEN_LIFETIME: "700"
+      EMAIL_HOST_USER: "hoanglinh@gmail.com"
+      EMAIL_HOST_PASSWORD: "nlhzaiwefcqyoibm"
+
+      GOOGLE_CLIENT_ID: "602346994340-g1enilui7bt5k51s3am8sres0qd50llr.apps.googleusercontent.com"
+      GOOGLE_SECRET: "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"
+      FACEBOOK_APP_ID: "373279445673335"
+      FACEBOOK_SECRET: "8090fff6334f50d3a50162b7c69dbc1d"
+
+      REDIS_HOST: 'redis'
+      REDIS_PORT: "6379"
+    restart: always
+    networks:
+      - traefik-public
+    ports:
+      - 8001:8000
+    volumes:
+      - media:/app/media
+
+  redis:
+    image: redis:7.2.3-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+    command: [
+      "redis-server",
+      "--save", "60", "100",
+      "--appendonly", "yes"
+    ]
+    volumes:
+      - redis_data:/data
+    networks:
+      - traefik-public
+
+
+volumes:
+  media:
+  redis_data:
+
+networks:
+  traefik-public:
