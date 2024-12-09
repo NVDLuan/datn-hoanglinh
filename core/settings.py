@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'leaderboard',
     'question',
     'topic',
-    "django_celery_beat"
 
 ]
 
@@ -72,7 +71,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 AUTH_USER_MODEL = 'authentication.User'
-print(BASE_DIR)
 
 TEMPLATES = [
     {

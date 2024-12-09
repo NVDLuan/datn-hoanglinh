@@ -1,0 +1,18 @@
+
+# giam khao
+{
+    "action": "judgment"
+    "judgment": correct/incorrect
+}
+# user change role
+
+{
+    "action": "change_role"
+    "role": "player"/"examiner"
+}
+
+next question of player
+{
+    action: next_question
+}
+

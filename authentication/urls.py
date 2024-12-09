@@ -1,10 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from authentication.views import GoogleLogin, FacebookLogin, UserViewSet
+from authentication.views import GoogleLogin, FacebookLogin, UserViewSet, UserDetailViewSet
 
 router = DefaultRouter()
 router.register('users', UserViewSet, basename='users')
+router.register('users', UserDetailViewSet, basename='users')
 
 urlpatterns = [
     path('auth/', include('dj_rest_auth.urls')),

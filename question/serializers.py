@@ -8,4 +8,4 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['image', 'name']
+        fields = ['image', 'name', "id"]

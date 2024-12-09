@@ -1,10 +1,13 @@
 import os
+import uuid
+from uuid import UUID
 
 from django.core.files.base import ContentFile
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -24,6 +27,10 @@ class TopicViewSet(ModelViewSet):
     serializer_class = TopicSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [FormParser, MultiPartParser]
+
+    def get_object(self):
+        obj = get_object_or_404(Topic, id=self.kwargs['pk'])
+        return obj
 
     def get_queryset(self):
         category = self.request.query_params.get('category', None)
@@ -92,7 +99,7 @@ class TopicImportView(GenericViewSet):
         try:
             with zipfile.ZipFile(file, 'r') as zip_file:
 
-                images = [f for f in zip_file.namelist() if f.lower().endswith(('png', 'jpg', 'jpeg', "jfif", ))]
+                images = [f for f in zip_file.namelist() if f.lower().endswith(('png', 'jpg', 'jpeg', "jfif",))]
                 questions = []
 
                 if request.user.is_superuser:

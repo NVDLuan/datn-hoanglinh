@@ -1,6 +1,7 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
+from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
@@ -21,6 +22,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
         topic_id = self.request.query_params.get('topic', None)
         if topic_id:
             return Question.objects.filter(topic_id=topic_id)
+        return self.queryset.all()
+
+    def get_object(self):
+        obj = get_object_or_404(Question, id=self.kwargs['pk'])
+        return obj
 
     @swagger_auto_schema(
         manual_parameters=[
