@@ -2,12 +2,15 @@ version: "3.6"
 
 services:
   api:
-    image: nvdluan/datn_linh:latest
+    container_name: datn_be
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
-      DB_NAME: "game"
-      DB_USER: "admin"
-      DB_PASSWORD: "V4j0STN1r3OKzuA1QprLPL9ImscJ3trt"
-      DB_HOST: "14.225.217.59"
+      DB_NAME: "postgres"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_HOST: "postgres"
       DB_PORT: "5432"
       ACCESS_TOKEN_LIFETIME: "30000"
       REFRESH_TOKEN_LIFETIME: "700"
@@ -27,7 +30,7 @@ services:
     ports:
       - 8001:8000
     volumes:
-      - media:/app/media
+      - .:/app
 
   redis:
     image: redis:7.2.3-alpine
@@ -39,15 +42,38 @@ services:
       "--save", "60", "100",
       "--appendonly", "yes"
     ]
-    volumes:
-      - redis_data:/data
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
     networks:
       - traefik-public
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:7.8
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 123123
+    ports:
+      - "5050:80"
+    networks:
+      - traefik-public
+    depends_on:
+      - postgres
 
 
 volumes:
-  media:
   redis_data:
+  postgres_data:
 
 networks:
   traefik-public:

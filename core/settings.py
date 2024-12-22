@@ -191,7 +191,9 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 REDIS_HOST = os.getenv("REDIS_HOST")
+print(REDIS_HOST)
 REDIS_PORT = os.getenv("REDIS_PORT")
+print(REDIS_PORT)
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -287,16 +289,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # Yêu cầu xác thực email
 # ACCOUNT_AUTHENTICATION_METHOD = "email"  # Xác thực bằng email
 
-REDIS_URL = os.environ.get('REDIS_URL', "redis://14.225.217.59:6379")
+REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}"
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = os.getenv("REDIS_PORT", "6379")
-CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
-CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
-CELERY_TASK_TIME_LIMIT = 300
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'

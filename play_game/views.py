@@ -1,5 +1,7 @@
 import json
 import uuid
+from datetime import datetime
+import random
 
 import redis
 from django.conf import settings
@@ -36,7 +38,10 @@ class RoomView(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, m
         redis_client = redis.StrictRedis.from_url(settings.REDIS_URL)
 
         # Tạo ID ngẫu nhiên
-        room_id = str(uuid.uuid4())[-12:]
+        random_number = random.randint(0, 999999)
+
+        # Chuyển thành chuỗi và thêm các số 0 ở đầu nếu cần
+        room_id = str(random_number).zfill(6)
 
         # Thêm thông tin user tạo phòng
         room_data = {
@@ -47,7 +52,8 @@ class RoomView(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, m
             "created_by": {
                 "username": user.username,
                 "avatar": user.profile.avatar.url if hasattr(user, "profile") else None,  # Avatar nếu có
-            }
+            },
+            "created_at": datetime.now().isoformat(),
         }
 
         # Lưu dữ liệu vào Redis
@@ -73,7 +79,14 @@ class RoomView(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, m
         for key in keys:
             room_data = redis_client.get(key)  # Lấy dữ liệu JSON từ Redis
             if room_data:
-                rooms.append(json.loads(room_data))  # Parse JSON thành dict
+                data = json.loads(room_data)
+                count_player = 2 if data.get('type', "fighting") == 'fighting' else 3
+                room_name = data.get('id')
+                current_player = redis_client.scard(f"room:{room_name}:players")
+                examiner = redis_client.get(f"room:{room_name}:examiner")
+                current_player += 1 if examiner else 0
+                data.update({'current_player': current_player, 'count_player': count_player})
+                rooms.append(data)  # Parse JSON thành dict
 
         # Trả về danh sách các phòng
         return Response(rooms, status=status.HTTP_200_OK)

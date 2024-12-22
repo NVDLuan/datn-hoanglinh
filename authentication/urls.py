@@ -1,9 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from authentication.views import GoogleLogin, FacebookLogin, UserViewSet, UserDetailViewSet
+from authentication.views import GoogleLogin, FacebookLogin, UserViewSet, UserDetailViewSet, UserInfoViewSet
 
 router = DefaultRouter()
+router.register('users', UserInfoViewSet, basename='users')
 router.register('users', UserViewSet, basename='users')
 router.register('users', UserDetailViewSet, basename='users')
 
