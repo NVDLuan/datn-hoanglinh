@@ -6,6 +6,7 @@
 ## require 
 - docker
 - python3.10 or high
+
 step 1 `docker compose up`
 
 step 2 `create .env filte`
