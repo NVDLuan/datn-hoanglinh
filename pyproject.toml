@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "doantotnghiep"
+version = "0.1.0"
+description = ""
+authors = ["Duy Luan <nvdluan@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlparse = "^0.3.1"
+djangorestframework = "3.14.0"
+python-dotenv = "^1.0.0"
+psycopg2-binary = "^2.9.9"
+djangorestframework-simplejwt = "^5.3.1"
+django-rest-swagger = "^2.2.0"
+pyyaml = "^6.0.1"
+django = {extras = ["gis"], version = "^4.2"}
+drf-yasg = "^1.21.7"
+django-cors-headers = "^4.3.1"
+pusher = "3.3.0"
+python-social-auth= "^0.3.6"
+django-allauth= "^0.61.1"
+dj-rest-auth="^5.0.2"
+python-socketio = "^5.11.2"
+channels = "^4.1.0"
+channels-redis = "^4.2.0"
+uvicorn = {extras = ["standard"], version = "^0.30.0"}
+mongoengine = "^0.28.2"
+celery = {extras = ["redis"], version = "^5.4.0"}
+redis = "^5.0.6"
+django-celery-beat = "^2.6.0"
+aioredis = "^2.0.1"
+pillow = "^11.0.0"
+django-filter = "^24.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,79 @@
+version: "3.6"
+
+services:
+  api:
+    container_name: datn_be
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_NAME: "postgres"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      ACCESS_TOKEN_LIFETIME: "30000"
+      REFRESH_TOKEN_LIFETIME: "700"
+      EMAIL_HOST_USER: "hoanglinh@gmail.com"
+      EMAIL_HOST_PASSWORD: "nlhzaiwefcqyoibm"
+
+      GOOGLE_CLIENT_ID: "602346994340-g1enilui7bt5k51s3am8sres0qd50llr.apps.googleusercontent.com"
+      GOOGLE_SECRET: "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"
+      FACEBOOK_APP_ID: "373279445673335"
+      FACEBOOK_SECRET: "8090fff6334f50d3a50162b7c69dbc1d"
+
+      REDIS_HOST: 'redis'
+      REDIS_PORT: "6379"
+    restart: always
+    networks:
+      - traefik-public
+    ports:
+      - 8001:8000
+    volumes:
+      - .:/app
+
+  redis:
+    image: redis:7.2.3-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+    command: [
+      "redis-server",
+      "--save", "60", "100",
+      "--appendonly", "yes"
+    ]
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - traefik-public
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:7.8
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 123123
+    ports:
+      - "5050:80"
+    networks:
+      - traefik-public
+    depends_on:
+      - postgres
+
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  traefik-public:
