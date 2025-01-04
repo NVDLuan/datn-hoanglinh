@@ -1,10 +1,6 @@
 FROM python:3.10
 ENV APPLICATION_SERVICE=/app
 
-
-RUN apt-get update && apt-get install -y libgl1-mesa-glx
-
-
 # set work directory
 RUN mkdir -p $APPLICATION_SERVICE
 
