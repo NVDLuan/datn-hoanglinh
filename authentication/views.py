@@ -83,3 +83,18 @@ class UserInfoViewSet(viewsets.GenericViewSet):
             return Response({"message": "Avatar updated successfully.", "data": serializer.data},
                             status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class DeleteUserView(viewsets.GenericViewSet, mixins.DestroyModelMixin):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAdminUser,)
+
+    def destroy(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.is_superuser:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+

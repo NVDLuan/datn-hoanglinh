@@ -231,6 +231,9 @@ class PvPGameConsumer(AsyncWebsocketConsumer):
             elif len(players) == 0:
                 await self.redis.delete(f"room_game:{self.room_name}")
                 await self.end_game()
+        except Exception as e:
+            print(e)
+
         finally:
             await self.redis.close()
 
