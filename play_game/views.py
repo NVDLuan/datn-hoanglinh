@@ -51,7 +51,7 @@ class RoomView(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, m
             "type": data.get('type', ""),
             "created_by": {
                 "username": user.username,
-                "avatar": user.profile.avatar.url if hasattr(user, "profile") else None,  # Avatar nếu có
+                "avatar": user.avatar.url if user.avatar else None,  # Avatar nếu có
             },
             "created_at": datetime.now().isoformat(),
         }
