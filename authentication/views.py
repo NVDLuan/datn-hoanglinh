@@ -26,7 +26,7 @@ class GoogleLogin(SocialLoginView):
 
 
 class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_superuser=False).all()
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserSerializer
@@ -84,6 +84,7 @@ class UserInfoViewSet(viewsets.GenericViewSet):
                             status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class DeleteUserView(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -95,6 +96,3 @@ class DeleteUserView(viewsets.GenericViewSet, mixins.DestroyModelMixin):
             return Response(status=status.HTTP_403_FORBIDDEN)
         obj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-

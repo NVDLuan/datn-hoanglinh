@@ -16,12 +16,10 @@ services:
       REFRESH_TOKEN_LIFETIME: "700"
       EMAIL_HOST_USER: "hoanglinh@gmail.com"
       EMAIL_HOST_PASSWORD: "nlhzaiwefcqyoibm"
-
       GOOGLE_CLIENT_ID: "602346994340-g1enilui7bt5k51s3am8sres0qd50llr.apps.googleusercontent.com"
       GOOGLE_SECRET: "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"
       FACEBOOK_APP_ID: "373279445673335"
       FACEBOOK_SECRET: "8090fff6334f50d3a50162b7c69dbc1d"
-
       REDIS_HOST: 'redis'
       REDIS_PORT: "6379"
     restart: always
@@ -42,6 +40,10 @@ services:
       "--save", "60", "100",
       "--appendonly", "yes"
     ]
+    ports:
+      - "6379:6379"
+    networks:
+      - traefik-public
 
   postgres:
     image: postgres:15
@@ -70,10 +72,10 @@ services:
     depends_on:
       - postgres
 
-
 volumes:
   redis_data:
   postgres_data:
 
 networks:
   traefik-public:
+     driver: bridge
