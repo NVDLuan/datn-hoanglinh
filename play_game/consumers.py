@@ -519,16 +519,17 @@ class PvPGameConsumer(AsyncWebsocketConsumer):
                 await self.redis.set(f"room:{self.room_name}:turn", next_player)
                 asyncio.create_task(self.start_timer(next_player))
         else:
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "game_over",
-                    'winner': "",
-                    "loser": "",
-                    "reason": "There are no questions in this topic!"
-                }
-            )
-            await self.end_game()
+            if is_next_turn:
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "game_over",
+                        'winner': "",
+                        "loser": "",
+                        "reason": "There are no questions in this topic!"
+                    }
+                )
+                await self.end_game()
 
     async def start_timer(self, player):
         """Tiếp tục đếm ngược thời gian còn lại cho người chơi."""

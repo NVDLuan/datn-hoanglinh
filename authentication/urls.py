@@ -6,9 +6,9 @@ from authentication.views import GoogleLogin, FacebookLogin, UserViewSet, UserDe
 
 router = DefaultRouter()
 router.register('users', UserInfoViewSet, basename='users')
-router.register('users', DeleteUserView, basename='users')
-router.register('users', UserViewSet, basename='users')
 router.register('users', UserDetailViewSet, basename='users')
+router.register('users', UserViewSet, basename='users')
+router.register('users', DeleteUserView, basename='users')
 
 urlpatterns = [
     path('auth/', include('dj_rest_auth.urls')),
